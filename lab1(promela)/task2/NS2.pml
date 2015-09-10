@@ -68,8 +68,48 @@ active proctype Alice() {
   
   /* and last - update the auxilary status variable */
   statusA = ok;
+
+  printf("Done Alice\n")
 }
 
 active proctype Bob() {
-   printf("placeholder for Bob\n")
+   /* local variables */
+  
+  mtype pkey;      /* the other agent's public key                 */
+  mtype pnonce;    /* nonce that we receive from the other agent   */
+  Crypt messageBA; /* our encrypted message to the other party     */
+  Crypt data;      /* received encrypted message                   */
+
+
+  /* Initialization  */
+  
+  partnerB = agentA;
+  pkey     = keyA; 
+
+  // Step 1
+  network ? (msg1, agentB, data);
+
+  /* We proceed only if the key field of the data matches keyA and the
+     received nonce is the one that we have sent earlier; block
+     otherwise.  */
+
+  (data.key == keyB) && (data.content1 == partnerB);
+  pnonce = data.content2;
+  
+  // Step 2
+  messageBA.key = pkey;
+  messageBA.content1 = pnonce; 
+  messageBA.content2 = nonceB;  
+  
+  /* Send the prepared messaage */
+  network ! msg2 (partnerB, messageBA);
+
+  // Step 3
+  network ? (msg3, agentB, data)
+  (data.key == keyB) && (data.content1 == nonceB);
+  /* and last - update the auxilary status variable */
+  statusB = ok;
+  
+  printf("Done Bob\n")
+  
 }
