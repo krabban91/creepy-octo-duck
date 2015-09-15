@@ -9,6 +9,9 @@ int hasEaten[NUM_PHIL];
 #define p (forklocations[0]<=1 && forklocations[0]>=0) && (forklocations[1]<=1 && forklocations[1]>=0) && (forklocations[2]<=1 && forklocations[2]>=0) && (forklocations[3]<=1 && forklocations[3]>=0)
 #define q (hasEaten[0] > 0 && hasEaten[1] > 0 && hasEaten[2] > 0 && hasEaten[3] > 0)
 
+ltl no_double_eat { always p }
+ltl no_starving { eventually q }
+
 proctype phil(int i){
 	do
 		::printf("Phil %d is thinking, %d \n", i, ((i+1)%NUM_PHIL) );
