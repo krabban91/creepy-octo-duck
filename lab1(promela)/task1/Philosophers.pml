@@ -6,6 +6,9 @@ chan forks[NUM_PHIL] = [1] of {byte};
 int forklocations[NUM_PHIL];
 int hasEaten[NUM_PHIL];
 
+#define p (forklocations[0]<=1 && forklocations[0]>=0) && (forklocations[1]<=1 && forklocations[1]>=0) && (forklocations[2]<=1 && forklocations[2]>=0) && (forklocations[3]<=1 && forklocations[3]>=0)
+#define q (hasEaten[0] > 0 && hasEaten[1] > 0 && hasEaten[2] > 0 && hasEaten[3] > 0)
+
 proctype phil(int i){
 	do
 		::printf("Phil %d is thinking, %d \n", i, ((i+1)%NUM_PHIL) );
@@ -48,26 +51,6 @@ proctype phil(int i){
 	od
 }
 
-active proctype checker(){
-	do /*Do Forever*/
-		::  int i = 0;		
-			do /*Do for each Philosopher*/ 
-				:: (i >= NUM_PHIL) -> break
-				:: else -> assert( always (forklocations[i]<=1 && forklocations[i]>=0); 
-					if /* Find starvation limit*/
-						::hasEaten[i]>HAPPY -> int p = 0;
-							do
-								:: p>= NUM_PHIL -> break
-								:: else -> assert(hasEaten[p]>0); p++
-							od
-						::else -> i=i
-					fi
-					i++
-
-		   	od
-	od
-}
-
 init {
 	int i = 0;
 	do 
@@ -81,8 +64,6 @@ init {
 		:: else -> run phil(i); i++
 	od
 }
-
-
 
 /* Found deadlock (Program jammed)*/
 /* Fixed with the arbitrary fix (if statement*/
