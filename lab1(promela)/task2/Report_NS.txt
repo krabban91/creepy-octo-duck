@@ -15,6 +15,11 @@ State-vector 60 byte, depth reached 33, errors: 0
 Then options -e -a to put a trail on any errors, -a to search for acceptance cycles.
 
 ---Task3---
+	spin -a
+	gcc pan -o pan.c
+	./pan -e -a
+	spin -t -p
+
 Running pan with the intruders found many errors here's the printout of one of them. 
 
 Full statespace search for:
