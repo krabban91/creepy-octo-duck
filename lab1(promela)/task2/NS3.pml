@@ -117,7 +117,7 @@ active proctype Bob() {
   
 }
 
-active proctype Intruder() {
+active proctype JockeP() {
   mtype msg, recpt;
   Crypt data, intercepted;
   do
