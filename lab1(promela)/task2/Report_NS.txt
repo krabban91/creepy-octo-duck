@@ -1,1 +1,77 @@
-Report_NS.txt
+---Task1 and Task2---
+Verified as:
+	spin -a NS2.pml
+	gcc pan -o pan.c
+	./pan -e -a
+
+Full statespace seflagsarch for:
+	never claim         	+ (always_end_ok)
+	assertion violations	+ (if within scope of claim)
+	acceptance   cycles 	+ (fairness disabled)
+
+State-vector 60 byte, depth reached 33, errors: 0
+
+-a to generate a model checker from spin, compile and run.
+Then options -e -a to put a trail on any errors, -a to search for acceptance cycles.
+
+---Task3---
+Running pan with the intruders found many errors here's the printout of one of them. 
+
+Full statespace search for:
+	never claim         	+ (always_end_ok)
+	assertion violations	+ (if within scope of claim)
+	acceptance   cycles 	+ (fairness disabled)
+	invalid end states	- (disabled by never claim)
+
+State-vector 76 byte, depth reached 43, errors: 1463
+
+ltl always_end_ok: <> (((statusA==ok)) && ((statusB==ok)))
+starting claim 3
+using statement merging
+Never claim moves to line 4	[(!(((statusA==ok)&&(statusB==ok))))]
+  2:	proc  2 (JockeP:1) NS3.pml:134 (state 8)	[msg = msg1]
+  4:	proc  2 (JockeP:1) NS3.pml:140 (state 14)	[recpt = agentB]
+  6:	proc  2 (JockeP:1) NS3.pml:143 (state 17)	[data.key = intercepted.key]
+  6:	proc  2 (JockeP:1) NS3.pml:144 (state 18)	[data.content1 = intercepted.content1]
+  6:	proc  2 (JockeP:1) NS3.pml:145 (state 19)	[data.content2 = intercepted.content2]
+  8:	proc  1 (Bob:1) NS3.pml:89 (state 1)	[partnerB = agentA]
+ 10:	proc  1 (Bob:1) NS3.pml:90 (state 2)	[pkey = keyA]
+ 12:	proc  2 (JockeP:1) NS3.pml:159 (state 34)	[network!msg,recpt,data.key,data.content1,data.content2]
+ 13:	proc  1 (Bob:1) NS3.pml:93 (state 3)	[network?msg1,agentB,data.key,data.content1,data.content2]
+ 15:	proc  2 (JockeP:1) NS3.pml:134 (state 8)	[msg = msg1]
+ 17:	proc  2 (JockeP:1) NS3.pml:139 (state 13)	[recpt = agentA]
+ 19:	proc  2 (JockeP:1) NS3.pml:143 (state 17)	[data.key = intercepted.key]
+ 19:	proc  2 (JockeP:1) NS3.pml:144 (state 18)	[data.content1 = intercepted.content1]
+ 19:	proc  2 (JockeP:1) NS3.pml:145 (state 19)	[data.content2 = intercepted.content2]
+ 21:	proc  0 (Alice:1) NS3.pml:31 (state 1)	[partnerA = agentB]
+ 23:	proc  0 (Alice:1) NS3.pml:32 (state 2)	[pkey = keyB]
+ 23:	proc  0 (Alice:1) NS3.pml:36 (state 3)	[messageAB.key = pkey]
+ 23:	proc  0 (Alice:1) NS3.pml:37 (state 4)	[messageAB.content1 = agentA]
+ 23:	proc  0 (Alice:1) NS3.pml:38 (state 5)	[messageAB.content2 = nonceA]
+  <<<<<START OF CYCLE>>>>>
+spin: trail ends after 25 steps
+#processes: 3
+		partnerA = agentB
+		partnerB = agentA
+		statusA = err
+		statusB = err
+ 25:	proc  2 (JockeP:1) NS3.pml:159 (state 34)
+ 25:	proc  1 (Bob:1) NS3.pml:99 (state 4)
+ 25:	proc  0 (Alice:1) NS3.pml:42 (state 6)
+ 25:	proc  - (always_end_ok:1) _spin_nvr.tmp:3 (state 3)
+3 processes created
+
+The execution is as follows: 
+JockeP (our intruder) begins preparing a message.
+Bob begins setting partner och his key meant for Alice.
+JockeP message.
+Bob recieves a message and ends up blocking as he cannot verify it's Alice's key.
+JockeP prepares and tries to send another message, gets blocked.
+Alice prepares her first message and tries to send it and gets blocked.
+
+End states for the different processes:
+JockeP wants to send a message.
+Alice wants to send a message.
+Bob is stuck trying to verify the key of his recieved message.
+
+Neither Alice's or Bob's status is OK.
