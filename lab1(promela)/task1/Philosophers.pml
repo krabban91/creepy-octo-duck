@@ -10,7 +10,7 @@ int hasEaten[NUM_PHIL];
 #define q (hasEaten[0] > 0 && hasEaten[1] > 0 && hasEaten[2] > 0 && hasEaten[3] > 0)
 
 ltl no_double_eat { always p }
-ltl no_starving { eventually q }
+ltl no_starving { always eventually q }
 
 proctype phil(int i){
 	do
