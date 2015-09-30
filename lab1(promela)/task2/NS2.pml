@@ -14,7 +14,7 @@ mtype partnerA, partnerB;
 mtype statusA = err;
 mtype statusB = err; 
 
-ltl always_end_ok { eventually (statusA == ok && statusB == ok) }
+ltl task2 { eventually (statusA == ok && statusB == ok) }
 
 /* Agent (A)lice */
 active proctype Alice() {
