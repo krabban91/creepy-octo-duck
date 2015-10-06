@@ -1,0 +1,6 @@
+1. We created a seperate active thread with a do-loop with the assertion of no two philosophers picking up the same fork  
+at the same time. (#define p in our code)
+
+2. We had a deadlock, solved by each Philosopher trying to first pick up a lower numbered fork. Consequently, the last philosopher will first try the other side of him then the rest, preventing a deadlock (which only occur if all philisophers pick up the forks in the same direction, i.e. everyone first pick up their right fork.).
+
+3. Simply put p in an ltl, always p.

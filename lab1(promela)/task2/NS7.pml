@@ -2,7 +2,7 @@ mtype = {ok, err, msg1, msg2, msg3, keyA, keyB, agentA, agentB,
          nonceA, nonceB, agentI, keyI, nonceI };
 
 
-typedef Crypt { mtype key, content1, content2 };
+typedef Crypt { mtype key, content1, content2, content3 };
 
 chan network = [0] of {mtype, /* msg# */
                        mtype, /* receiver */
@@ -17,9 +17,9 @@ mtype statusB = err;
 bool knows_nonceA = false, knows_nonceB = false;
 
 //ltl always_end_ok { eventually (statusA == ok && statusB == ok) }
-ltl part6_1 { always ((statusA == ok && statusB == ok)  -> (partnerA == agentB && partnerB == agentA)) }
-ltl part6_2 { always ((statusA == ok && partnerA == agentB ) -> (!knows_nonceA)) }
-ltl part6_3 { always ((statusB == ok && partnerB == agentA ) -> (!knows_nonceB)) }
+ltl PropAB { always ((statusA == ok && statusB == ok)  -> (partnerA == agentB && partnerB == agentA)) }
+ltl PropA { always ((statusA == ok && partnerA == agentB ) -> (!knows_nonceA)) }
+ltl PropB { always ((statusB == ok && partnerB == agentA ) -> (!knows_nonceB)) }
 /* Agent (A)lice */
 active proctype Alice() {
   /* local variables */
@@ -57,16 +57,17 @@ active proctype Alice() {
      received nonce is the one that we have sent earlier; block
      otherwise.  */
 
-  (data.key == keyA) && (data.content1 == nonceA);
+  (data.key == keyA) && (data.content1 == partnerA) &&(data.content2 == nonceA);
 
   /* Obtain Bob's nonce */
   
-  pnonce = data.content2;
+  pnonce = data.content3;
 
   /* Prepare the last message */  
   messageAB.key = pkey;
   messageAB.content1 = pnonce; 
-  messageAB.content2 = 0;  /* content2 is not used in the last message,
+  messageAB.content2 = 0;
+  messageAB.content3 = 0;  /* content2 and content3 is not used in the last message,
                               just set it to 0 */
 
   
@@ -106,8 +107,9 @@ active proctype Bob() {
   
   // Step 2
   messageBA.key = pkey;
-  messageBA.content1 = pnonce; 
-  messageBA.content2 = nonceB;  
+  messageBA.content1 = agentB;
+  messageBA.content2 = pnonce; 
+  messageBA.content3 = nonceB;  
   
   /* Send the prepared messaage */
   network ! msg2 (partnerB, messageBA);
@@ -164,13 +166,19 @@ active proctype JockeP() {
                   :: knows_nonceA -> data.content2 = nonceA;  //Added
                   :: knows_nonceB -> data.content2 = nonceB;  //Added
                 fi;
+                data.content3 = 0;
               :: msg == msg2 -> 
                 if /* assemble content1 */
+                  :: data.content1 = agentA;
+                  :: data.content1 = agentB;
+                  :: data.content1 = agentI;
+                fi ;   
+                if /* assemble content2 */
                   :: data.content1 = nonceI;
                   :: knows_nonceA -> data.content1 = nonceA;  //Added
                   :: knows_nonceB -> data.content1 = nonceB;  //Added
                 fi ;   
-                if /* assemble  content2 */
+                if /* assemble  content3 */
                   :: data.content2 = nonceI;
                   :: knows_nonceA -> data.content2 = nonceA;  //Added
                   :: knows_nonceB -> data.content2 = nonceB;  //Added
@@ -183,6 +191,7 @@ active proctype JockeP() {
                 fi ;
                 /* assemble  content2 */
                 data.content2 = 0;
+                data.content3 = 0;
             fi
             if /* assemble key */
               :: data.key = keyA;

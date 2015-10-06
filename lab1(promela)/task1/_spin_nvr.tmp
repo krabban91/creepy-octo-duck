@@ -1,0 +1,25 @@
+never no_double_eat {    /* !(((([] ((forklocations[0]<=1))) && ((forklocations[1]<=1))) && ((forklocations[2]<=1))) && ((forklocations[3]<=1))) */
+T0_init:
+	do
+	:: atomic { (((! (((forklocations[0]<=1)))) || (((! (((forklocations[1]<=1)))) || (((! (((forklocations[2]<=1)))) || (! (((forklocations[3]<=1)))))))))) -> assert(!(((! (((forklocations[0]<=1)))) || (((! (((forklocations[1]<=1)))) || (((! (((forklocations[2]<=1)))) || (! (((forklocations[3]<=1))))))))))) }
+	:: (1) -> goto T0_S6
+	od;
+T0_S6:
+	do
+	:: atomic { (! (((forklocations[0]<=1)))) -> assert(!(! (((forklocations[0]<=1))))) }
+	:: (1) -> goto T0_S6
+	od;
+accept_all:
+	skip
+}
+never no_starving {    /* !([] (<> (((((hasEaten[0]>0)) && ((hasEaten[1]>0))) && ((hasEaten[2]>0))) && ((hasEaten[3]>0))))) */
+T0_init:
+	do
+	:: (! ((((((hasEaten[0]>0)) && ((hasEaten[1]>0))) && ((hasEaten[2]>0))) && ((hasEaten[3]>0))))) -> goto accept_S4
+	:: (1) -> goto T0_init
+	od;
+accept_S4:
+	do
+	:: (! ((((((hasEaten[0]>0)) && ((hasEaten[1]>0))) && ((hasEaten[2]>0))) && ((hasEaten[3]>0))))) -> goto accept_S4
+	od;
+}
