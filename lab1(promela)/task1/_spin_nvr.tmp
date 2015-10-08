@@ -1,12 +1,12 @@
-never no_double_eat {    /* !(((([] ((forklocations[0]<=1))) && ((forklocations[1]<=1))) && ((forklocations[2]<=1))) && ((forklocations[3]<=1))) */
+never no_double_eat {    /* !(((([] (((forklocations[0]<=1)) && ((forklocations[0]>=0)))) && (((forklocations[1]<=1)) && ((forklocations[1]>=0)))) && (((forklocations[2]<=1)) && ((forklocations[2]>=0)))) && (((forklocations[3]<=1)) && ((forklocations[3]>=0)))) */
 T0_init:
 	do
-	:: atomic { (((! (((forklocations[0]<=1)))) || (((! (((forklocations[1]<=1)))) || (((! (((forklocations[2]<=1)))) || (! (((forklocations[3]<=1)))))))))) -> assert(!(((! (((forklocations[0]<=1)))) || (((! (((forklocations[1]<=1)))) || (((! (((forklocations[2]<=1)))) || (! (((forklocations[3]<=1))))))))))) }
+	:: atomic { (((! ((((forklocations[0]<=1)) && ((forklocations[0]>=0))))) || (((! ((((forklocations[1]<=1)) && ((forklocations[1]>=0))))) || (((! ((((forklocations[2]<=1)) && ((forklocations[2]>=0))))) || (! ((((forklocations[3]<=1)) && ((forklocations[3]>=0))))))))))) -> assert(!(((! ((((forklocations[0]<=1)) && ((forklocations[0]>=0))))) || (((! ((((forklocations[1]<=1)) && ((forklocations[1]>=0))))) || (((! ((((forklocations[2]<=1)) && ((forklocations[2]>=0))))) || (! ((((forklocations[3]<=1)) && ((forklocations[3]>=0)))))))))))) }
 	:: (1) -> goto T0_S6
 	od;
 T0_S6:
 	do
-	:: atomic { (! (((forklocations[0]<=1)))) -> assert(!(! (((forklocations[0]<=1))))) }
+	:: atomic { (! ((((forklocations[0]<=1)) && ((forklocations[0]>=0))))) -> assert(!(! ((((forklocations[0]<=1)) && ((forklocations[0]>=0)))))) }
 	:: (1) -> goto T0_S6
 	od;
 accept_all:

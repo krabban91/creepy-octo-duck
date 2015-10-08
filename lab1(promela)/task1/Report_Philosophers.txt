@@ -4,3 +4,69 @@ at the same time. (#define p in our code)
 2. We had a deadlock, solved by each Philosopher trying to first pick up a lower numbered fork. Consequently, the last philosopher will first try the other side of him then the rest, preventing a deadlock (which only occur if all philisophers pick up the forks in the same direction, i.e. everyone first pick up their right fork.).
 
 3. Simply put p in an ltl, always p.
+
+
+Additional Comments: 
+Before we started we only had the critical section which broke the mutex:
+
+proctype phil(int i){
+	do
+		int left = i, right = (i+1)%NUM_PHIL; 
+		
+		::printf("Phil %d is thinking, %d \n", i, ((i+1)%NUM_PHIL) );
+		
+		/*Pre-crit*/
+		forklocations[left]--;
+		forklocations[right]--;
+
+		/* Critical Section*/
+		printf("Phil %d is eating\n", i);
+		assert(forklocations[left] == 0 && forklocations[right] == 0);
+		/* end of Critical Section*/
+
+
+		/*Post-crit*/
+		forklocations[left]++;
+		forklocations[right]++;
+		}
+	od
+}
+
+Then we added the channels giving us a mutex, but would deadlock after a while. 
+We found the deadlock by just running "spin Philosophers.pml". the code looked like this: 
+
+proctype phil(int i){
+	do
+		int left = i, right = (i+1)%NUM_PHIL; 
+		::printf("Phil %d is thinking, %d \n", i, ((i+1)%NUM_PHIL) );
+		byte disposable;
+		/*Pre-crit*/
+		atomic{ /* Only for show.*/
+			forks[left]?_;
+			forklocations[left]--;
+		}
+		atomic{ /* Only for show.*/
+			forks[right]?_;
+			forklocations[right]--;
+		}
+
+		/* Critical Section*/
+		printf("Phil %d is eating\n", i);
+		assert(forklocations[left] == 0 && forklocations[right] == 0);
+		/* end of Critical Section*/
+
+		/*Post-crit*/
+		atomic{ /* Only for show.*/
+			forks[left]!disposable;
+			forklocations[left]++;
+		}
+		atomic{ /* Only for show.*/
+			forks[right]!disposable;
+			forklocations[right]++;
+		}
+	od
+}
+
+The deadlock was caused by that every philosopher grabbed their left fork. So by selecting one arbitrary philosopher to do the opposite this was prevented. 
+This is the point of the code that is in Philosophers.pml. We tried to solve the Starvation problem but felt that in order to do that we had to modify the whole idea into "The talking thinking philosophers". Which wasn't as interesting. 
+

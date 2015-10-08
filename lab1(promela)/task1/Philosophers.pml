@@ -14,43 +14,47 @@ ltl no_starving { always eventually q }
 
 proctype phil(int i){
 	do
+		int left = i, right = (i+1)%NUM_PHIL; 
 		::printf("Phil %d is thinking, %d \n", i, ((i+1)%NUM_PHIL) );
 		byte disposable;
+
+		/*Pre-crit*/
 		if /* The last philosopher checks 
 			  right instead of left first */
-			:: i>((i+1)%NUM_PHIL) ->
+			:: true ->
 				atomic{ /* Only for show.*/
-					forks[i]?disposable;
-					forklocations[i]--;
+					forks[left]?_;
+					forklocations[left]--;
 				}
 				atomic{ /* Only for show.*/
-					forks[(i+1)%NUM_PHIL]?disposable;
-					forklocations[(i+1)%NUM_PHIL]--;
+					forks[right]?_;
+					forklocations[right]--;
 				}
 			:: else ->
 				atomic{ /* Only for show.*/
-					forks[(i+1)%NUM_PHIL]?disposable;
-					forklocations[(i+1)%NUM_PHIL]--;
+					forks[right]?disposable;
+					forklocations[right]--;
 				}
 				atomic{ /* Only for show.*/
-					forks[i]?disposable;
-					forklocations[i]--;
+					forks[left]?disposable;
+					forklocations[left]--;
 				}
 		fi		
 		/* Critical Section*/
 		printf("Phil %d is eating\n", i);
 		hasEaten[i]++;
+		assert(forklocations[left] == 0 && forklocations[right] == 0);
 		/* end of Critical Section*/
 
+		/*Post-crit*/
 		atomic{ /* Only for show.*/
-			forks[i]!disposable;
-			forklocations[i]++;
+			forks[left]!disposable;
+			forklocations[left]++;
 		}
 		atomic{ /* Only for show.*/
-			forks[(i+1)%NUM_PHIL]!disposable;
-			forklocations[(i+1)%NUM_PHIL]++;
+			forks[right]!disposable;
+			forklocations[right]++;
 		}
-
 	od
 }
 

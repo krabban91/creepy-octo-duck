@@ -17,9 +17,9 @@ mtype statusB = err;
 bool knows_nonceA = false, knows_nonceB = false;
 
 //ltl always_end_ok { eventually (statusA == ok && statusB == ok) }
-ltl part6_1 { always ((statusA == ok && statusB == ok)  -> (partnerA == agentB && partnerB == agentA)) }
-ltl part6_2 { always ((statusA == ok && partnerA == agentB ) -> (!knows_nonceA)) }
-ltl part6_3 { always ((statusB == ok && partnerB == agentA ) -> (!knows_nonceB)) }
+ltl PropAB { always ((statusA == ok && statusB == ok)  -> (partnerA == agentB && partnerB == agentA)) }
+ltl PropA { always ((statusA == ok && partnerA == agentB ) -> (!knows_nonceA)) }
+ltl PropB { always ((statusB == ok && partnerB == agentA ) -> (!knows_nonceB)) }
 /* Agent (A)lice */
 active proctype Alice() {
   /* local variables */
