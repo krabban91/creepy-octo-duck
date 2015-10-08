@@ -1,4 +1,4 @@
----Task1 and Task2---
+---------------------------------------------------------Task1 and Task2---
 Verified as:
 	spin -a NS2.pml
 	gcc pan -o pan.c
@@ -14,9 +14,14 @@ State-vector 60 byte, depth reached 33, errors: 0
 -a to generate a model checker from spin, compile and run.
 Using -a to search for acceptence cycles since we have a safety property (always)
 
----Task3---
+---------------------------------------------------------Task3---
+
+
 	./pan -e -a
 	spin -t -p
+
+Running the ./pan with -e and -a flag allows us to have one trace for each acceptance error.
+By renaming one of these trails to the actual name.trail we could follow the path.  
 
 Running pan with the intruders found many errors here's the printout of one of them. 
 
@@ -80,10 +85,17 @@ Bob is stuck trying to verify the key of his recieved message.
 Neither Alice's or Bob's status is OK.
 
 
--- Task6 --
+--------------------------------------------------------- Task6 ---
 
-Assertion 2 holds.
-However assertion 1 and 3 does not, following is the trace for counter example of 1:
+	spin -a NS6.pml
+	./pan -a N PropAB
+	./pan -a N PropA
+	./pan -a N PropB
+
+only the ltl PropA held. here is the trace for PropAB.
+	(./pan -a N PropAB
+	 spin -t -p NS6.pml)
+
 ltl PropAB: [] ((! (((statusA==ok)) && ((statusB==ok)))) || (((partnerA==agentB)) && ((partnerB==agentA))))
 ltl PropA: [] ((! (((statusA==ok)) && ((partnerA==agentB)))) || (! (knows_nonceA)))
 ltl PropB: [] ((! (((statusB==ok)) && ((partnerB==agentA)))) || (! (knows_nonceB)))
@@ -183,3 +195,10 @@ Both Bob and Alice now thinks that the protocol has worked and StatusX = ok.
 
 This causes the ltl expressions "PropAB" and "PropB" to break.
 
+
+--------------------------------------------------------- task7 ---
+
+
+After patching the protocol by adding a check at alice's side to see who we are talking to she notices that she is receiving messages from someone else than she is sending to. And by locking at that location Bob will never receive the final verification message from Alice (m3: {Nb}).
+In other words: if the Intruder knows Bob's Nonce; the protocol has not been complete. The following ltl forms:
+always( knowsNonceB -> (statusB != ok) ) 

@@ -1,4 +1,4 @@
-never part6_1 {    /* !([] ((! (((statusA==ok)) && ((statusB==ok)))) || (((partnerA==agentB)) && ((partnerB==agentA))))) */
+never PropAB {    /* !([] ((! (((statusA==ok)) && ((statusB==ok)))) || (((partnerA==agentB)) && ((partnerB==agentA))))) */
 T0_init:
 	do
 	:: atomic { (! (((! (((statusA==ok)) && ((statusB==ok)))) || (((partnerA==agentB)) && ((partnerB==agentA)))))) -> assert(!(! (((! (((statusA==ok)) && ((statusB==ok)))) || (((partnerA==agentB)) && ((partnerB==agentA))))))) }
@@ -7,7 +7,7 @@ T0_init:
 accept_all:
 	skip
 }
-never part6_2 {    /* !([] ((! (((statusA==ok)) && ((partnerA==agentB)))) || (! (knows_nonceA)))) */
+never PropA {    /* !([] ((! (((statusA==ok)) && ((partnerA==agentB)))) || (! (knows_nonceA)))) */
 T0_init:
 	do
 	:: atomic { (! (((! (((statusA==ok)) && ((partnerA==agentB)))) || (! (knows_nonceA))))) -> assert(!(! (((! (((statusA==ok)) && ((partnerA==agentB)))) || (! (knows_nonceA)))))) }
@@ -16,7 +16,7 @@ T0_init:
 accept_all:
 	skip
 }
-never part6_3 {    /* !([] ((! (((statusB==ok)) && ((partnerB==agentA)))) || (! (knows_nonceB)))) */
+never PropB {    /* !([] ((! (((statusB==ok)) && ((partnerB==agentA)))) || (! (knows_nonceB)))) */
 T0_init:
 	do
 	:: atomic { (! (((! (((statusB==ok)) && ((partnerB==agentA)))) || (! (knows_nonceB))))) -> assert(!(! (((! (((statusB==ok)) && ((partnerB==agentA)))) || (! (knows_nonceB)))))) }
