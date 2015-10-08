@@ -201,4 +201,4 @@ This causes the ltl expressions "PropAB" and "PropB" to break.
 
 After patching the protocol by adding a check at alice's side to see who we are talking to she notices that she is receiving messages from someone else than she is sending to. And by locking at that location Bob will never receive the final verification message from Alice (m3: {Nb}).
 In other words: if the Intruder knows Bob's Nonce; the protocol has not been complete. The following ltl forms:
-always( knowsNonceB -> (statusB != ok) ) 
+always( knowsNonceB -> (statusB != ok) ) now holds.
