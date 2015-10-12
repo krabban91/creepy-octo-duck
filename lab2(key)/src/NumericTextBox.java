@@ -43,11 +43,12 @@ public class NumericTextBox
   /**
    * Gets the currently assigned TextBoxRenderer.
    */
-  /*@ public normal_behavior;
-   *@ ensures result == textBoxRenderer;
-   *@ ensures \old(textBoxRenderer) == textBoxRenderer ;
+  /*
+  @ public normal_behavior
+  @ ensures result == textBoxRenderer;
+  @ ensures \old(textBoxRenderer) == textBoxRenderer ;
    */
-  public  /*@ pure @*/ TextBoxRenderer getRenderer()
+  public  /*@ pure @*/TextBoxRenderer getRenderer()
   {
     // ...
   }
@@ -57,19 +58,11 @@ public class NumericTextBox
   /**
    * Sets the TextBoxRenderer used for rendering this text box.
    * It can also be set to null, if the text box is not rendered.
-   *@ public normal_behavior
-   *@   ensures renderer != null;
-   *@   ensures textBoxRenderer == renderer;
-   *@ also
-   *@ public normal_behavior
-   *@   requires renderer == null;
-   *@   requires textBoxRenderer.rendered;
-   *@   ensures \old(textBoxRenderer) == textBoxRenderer;
-   *@ also
-   *@ public normal_behavior
-   *@   requires renderer == null;
-   *@   requires !textBoxRenderer.rendered;
-   *@   ensures textBoxRenderer == null;
+   **/
+   /*
+   @ public normal_behavior
+   @   assignable textBoxRenderer
+   @   ensures textBoxRenderer == renderer;
    */
   public void setRenderer(TextBoxRenderer renderer)
   {
@@ -81,14 +74,15 @@ public class NumericTextBox
    * 
    * @param input The input character.;
    * @return true if the input is a single digit, false otherwise.;
-   *
-   *@ public normal_behaviour;
-   *@   requires (input >= 0 && input <= 9);
-   *@   ensures result;
-   *@ also;
-   *@ public normal_behaviour;
-   *@   requires (input > 9 || input < 0);
-   *@   ensures result == false;
+   **/ 
+  /*
+   @ public normal_behaviour;
+   @   requires (input >= 0 && input <= 9);
+   @   ensures result;
+   @ also;
+   @ public normal_behaviour;
+   @   requires (input > 9 || input < 0);
+   @   ensures result == false;
    */
   public /*@ pure @*/ boolean isSingleDigit(int input)
   {
@@ -98,15 +92,16 @@ public class NumericTextBox
   /**
    * Clears the text box and resets the cursor to the start.
    * Also sets the contentChanged flag of the current TextBoxRenderer, if any.
-   *
-   *@ public normal_behavior
-   *@   assignable textBoxRenderer.contentChanged;
-   *@   assignable content;
-   *@   assignable cursorPosition;
-   *@   requires textBoxRenderer != null;
-   *@   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
-   *@   ensures \forAll int i; i < content.length && i >= 0; content[i] == EMPTY;
-   *@   ensures cursorPosition == 0;
+   **/
+  /*
+   @ public normal_behavior
+   @   assignable textBoxRenderer.contentChanged;
+   @   assignable content;
+   @   assignable cursorPosition;
+   @   requires textBoxRenderer != null;
+   @   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
+   @   ensures \forAll int i; i < content.length && i >= 0; content[i] == EMPTY;
+   @   ensures cursorPosition == 0;
    */
   public void clear()
   {
