@@ -24,14 +24,14 @@ public class NumericTextBox
    * Note that the number of possible cursor positions is greater by one than
    * the length of the text box.
    */
-  private int cursorPosition;
+  private /*@ spec_public @*/ int cursorPosition;
   
   /**
    * This array stores the contents of the text box. At every position
    * before the cursor, there is a valid value (i.e. a single digit).
    * Positions after the cursor must be EMPTY.
    */
-  private int[] content;
+  private /*@ spec_public @*/ int[] content;
   
   /**
    * Holds the current TextBoxRenderer. This can be null, which means that there
@@ -43,11 +43,11 @@ public class NumericTextBox
   /**
    * Gets the currently assigned TextBoxRenderer.
    */
-  /*@ public normal_behavior
-   *@ ensures result == textBoxRenderer
-   *@ ensures \old(textBoxRenderer) == textBoxRenderer 
+  /*@ public normal_behavior;
+   *@ ensures result == textBoxRenderer;
+   *@ ensures \old(textBoxRenderer) == textBoxRenderer ;
    */
-  public TextBoxRenderer getRenderer()
+  public  /*@ pure @*/ TextBoxRenderer getRenderer()
   {
     // ...
   }
@@ -58,18 +58,18 @@ public class NumericTextBox
    * Sets the TextBoxRenderer used for rendering this text box.
    * It can also be set to null, if the text box is not rendered.
    *@ public normal_behavior
-   *@ requires renderer != null
-   *@ ensures textBoxRenderer == renderer
+   *@   ensures renderer != null;
+   *@   ensures textBoxRenderer == renderer;
    *@ also
    *@ public normal_behavior
-   *@ requires renderer == null
-   *@ requires textBoxRenderer.rendered
-   *@ ensures \old(textBoxRenderer) == textBoxRenderer
+   *@   requires renderer == null;
+   *@   requires textBoxRenderer.rendered;
+   *@   ensures \old(textBoxRenderer) == textBoxRenderer;
    *@ also
    *@ public normal_behavior
-   *@ requires renderer == null
-   *@ requires !textBoxRenderer.rendered
-   *@ ensures textBoxRenderer == null
+   *@   requires renderer == null;
+   *@   requires !textBoxRenderer.rendered;
+   *@   ensures textBoxRenderer == null;
    */
   public void setRenderer(TextBoxRenderer renderer)
   {
@@ -79,13 +79,18 @@ public class NumericTextBox
   /**
    * Checks whether a given input is a single digit (i.e. between 0 and 9).
    * 
-   * @param input The input character.
-   * @return true if the input is a single digit, false otherwise.
+   * @param input The input character.;
+   * @return true if the input is a single digit, false otherwise.;
    *
-   *@ public normal_behavior
-   *@ ensures result == ((input % 10) == input)
+   *@ public normal_behaviour;
+   *@   requires (input >= 0 && input <= 9);
+   *@   ensures result;
+   *@ also;
+   *@ public normal_behaviour;
+   *@   requires (input > 9 || input < 0);
+   *@   ensures result == false;
    */
-  public boolean isSingleDigit(int input)
+  public /*@ pure @*/ boolean isSingleDigit(int input)
   {
     // ...
   }
@@ -94,7 +99,14 @@ public class NumericTextBox
    * Clears the text box and resets the cursor to the start.
    * Also sets the contentChanged flag of the current TextBoxRenderer, if any.
    *
-   *@ public normal_behavior 
+   *@ public normal_behavior
+   *@   assignable textBoxRenderer.contentChanged;
+   *@   assignable content;
+   *@   assignable cursorPosition;
+   *@   requires textBoxRenderer != null;
+   *@   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
+   *@   ensures \forAll int i; i < content.length && i >= 0; content[i] == EMPTY;
+   *@   ensures cursorPosition == 0;
    */
   public void clear()
   {
@@ -113,6 +125,26 @@ public class NumericTextBox
    * @throws RuntimeException if the input was valid, but the cursor is at the end
    *               of the text box and no further input can be accepted. 
    */
+
+  /* 
+  @ public normal_behaviour
+  @   assignable cursorPosition;
+  @   assignable content;
+  @   requires isSingleDigit(input);
+  @   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
+  @   ensures cursorPosition == \old(cursorPosition) + 1;
+  @   ensures content[\old(cursorPosition)] == input;
+  @   ensures \forAll int i; i < content.length && i >= 0; content[i] == \old(content[i]) || i == \old(cursorPosition);
+  @ also
+  @   public exceptional_behaviour
+  @      requires !isSingleDigit(input);
+  @      signals (IllegalArgumentException) true;
+  @ also
+  @   public exceptional_behaviour
+  @      requires isSingleDigit(input);
+  @      requires cursorPosition == content.length;
+  @      signals (RuntimeException) true;
+  */
   public void enterCharacter(int input)
   {
     // ...
@@ -126,6 +158,23 @@ public class NumericTextBox
    *               the showError flag of the TextBoxRenderer is set
    *               before the exception is thrown.
    */
+
+  /*
+  @ public normal_behaviour
+  @   assignable content;
+  @   assignable cursorPosition;
+  @   assignable textBoxRenderer.contentChanged;
+  @   requires cursorPosition > 0;
+  @   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
+  @   ensures cursorPosition == \old(cursorPosition) - 1;
+  @   ensures \forAll int i; i < content.length && i >= 0; content[i] == \old(content[i]) || i == cursorPosition;
+  @   ensures content[cursorPosition] == EMPTY;
+  @ public behaviour
+  @   requires cursorPosition == 0;
+  @   assignable textBoxRenderer.showError
+  @   ensures textBoxRenderer != null ==> textBoxRenderer.showError;
+  @   signals (RuntimeException e) true;
+  */
   public void backspace()
   {
     // ...
