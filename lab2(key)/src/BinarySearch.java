@@ -63,11 +63,25 @@ public class BinarySearch {
 	  @*/
 	private void eliminateDuplicates(int[] numbers) {
 		int i = 0;
+		/*@
+		@ loop_invariant (i <= size && size >= \old(size) && numbers != null && (\forall int x; x >= 0 && x < i; numbers[x] != numbers[i]));	
+		@  
+		@ assignable numbers[*], size;
+		@ decreasing (numbers.length - 1) - i;
+		@*/
 		while (i < numbers.length - 1) {
 			if (i >= size)
 				break;
 			if (numbers[i] == numbers[i + 1]) {
 				int j = i + 1;
+
+				/*@
+				@ loop_invariant (numbers[j-1] == numbers[j]);
+				@ 
+				@
+				@ assignable numbers[*];
+				@ decreasing (numbers.length - 1) - j;
+				@*/
 				while (j < numbers.length - 1) {
 					numbers[j] = numbers[j + 1];
 					j++;
