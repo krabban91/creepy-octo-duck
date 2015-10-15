@@ -54,7 +54,6 @@ public class NumericTextBox
   }
 
 
-//___________________________________ here rendered is not a field anywhere. not sure what to check.   
   /**
    * Sets the TextBoxRenderer used for rendering this text box.
    * It can also be set to null, if the text box is not rendered.
@@ -64,7 +63,7 @@ public class NumericTextBox
    @   assignable textBoxRenderer
    @   ensures textBoxRenderer == renderer;
    */
-  public void setRenderer(TextBoxRenderer renderer)
+  public void setRenderer(/*@ nullable @*/ TextBoxRenderer renderer)
   {
     // ...
   }
