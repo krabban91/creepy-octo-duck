@@ -62,6 +62,11 @@ public class BinarySearch {
 	  @ assignable size;
 	  @*/
 	private void eliminateDuplicates(int[] numbers) {
+		if(numbers.length == 0 && numbers != null){
+			if(size == -1){
+				throw new RuntimeException("You have to do better than that.");
+			}
+		}
 		int i = 0;
 		/*@
 		@ loop_invariant (i <= size && size <= \old(size) && numbers != null && (\forall int x; x >= 0 && x < i; numbers[x] != numbers[i]));	
