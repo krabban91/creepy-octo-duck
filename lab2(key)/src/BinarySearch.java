@@ -64,8 +64,8 @@ public class BinarySearch {
 	private void eliminateDuplicates(int[] numbers) {
 		int i = 0;
 		/*@
-		@ loop_invariant (i <= size && size >= \old(size) && numbers != null && (\forall int x; x >= 0 && x < i; numbers[x] != numbers[i]));	
-		@  
+		@ loop_invariant (i <= size && size <= \old(size) && numbers != null && (\forall int x; x >= 0 && x < i; numbers[x] != numbers[i]));	
+		@ 
 		@ assignable numbers[*], size;
 		@ decreasing (numbers.length - 1) - i;
 		@*/
@@ -91,6 +91,35 @@ public class BinarySearch {
 			}
 			i++;
 		}
+	}
+
+
+	/*@
+	  @ public normal_behavior
+	  @ requires arr != null;
+	  @ requires j >= 0;
+	  @ requires j < arr.length;
+	  @ requires arr.length > 0;
+	  @ 
+	  @ ensures (\forall int x; j <= x && x < arr.length - 1; arr[x] == \old(arr[x+1]));
+	  @ assignable arr[*];
+	  @
+	  @ */
+	private void shiftArray(int[] arr, int j) {
+		/*@
+		@ loop_invariant ((arr[j-1] == arr[j] || (j == 0)) && j <= arr.length - 1 && j >= 0);
+		@ 
+		@
+		@ assignable arr[*];
+		@ decreasing (arr.length - 1) - j;
+		@*/
+		while (j < arr.length - 1) {
+			arr[j] = arr[j + 1];
+			j++;
+		}
+		arr[arr.length - 1] = 0;
+
+
 	}
 
 	/*@
