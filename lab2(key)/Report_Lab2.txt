@@ -67,5 +67,25 @@ ___________________________________
 
 3.3
 
+File 
+ - Drawing.java
+
+a)
+
+File
+ - Lab2Prob33a.proof
+
 
 __________________
+
+b)
+
+File
+ - Lab2Prob33b.proof
+
+The method we used to check the invariant was to inspect the code first. Then we realized that the invariant didn't hold after the loop.
+There for we changed the
+	"0 <= i && i < canvas[depth].length"
+into
+	"0 <= i && i <= canvas[depth].length".
+
