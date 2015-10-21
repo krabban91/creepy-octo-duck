@@ -30,16 +30,42 @@ enterCharacter
 	"ensures content[\old(cursorPosition)] == input;
   	ensures \forAll int i; i < content.length && i >= 0; content[i] == \old(content[i]) || i == \old(cursorPosition);"
 and backspace is the same but with the new cursorPosition. 
+These longer formulas ensures that all values except one changes in content. 
 
+Apart from this the file is sort of straight forward.
+The exceptional case of backspace() was not fixed until we saw an example of the contract later in 3.3
 
 _______________________________________________________________________
 
 Problem 3
 
 3.1
+
+File
+ - BinarySearch.java
+ - Lab2Prob31.proof
+
+Method Treatment.set(none).
+This was kind of straight forward. Use contract for the eliminateDuplicates method call and inline method for the report method.  
 ___________________________________
 
 3.2
+
+File
+ - BinarySearch.java
+ - Lab2Prob32.proof
+
+In this part we had bigger problems. At first our check was the following: 
+"if(size == -1){
+	throw RuntimeException("");
+}"
+But then the proof could not finish due to the cases of size != -1 and entering the while loop.
+
+After a while we realized that we were checking for the wrong thing and changed the check to the required predicates and made sure that size == -1 when throwing the exception. 
+
 ___________________________________
 
 3.3
+
+
+__________________

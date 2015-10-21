@@ -158,11 +158,11 @@ public class NumericTextBox
   @   ensures cursorPosition == \old(cursorPosition) - 1;
   @   ensures \forAll int i; i < content.length && i >= 0; content[i] == \old(content[i]) || i == cursorPosition;
   @   ensures content[cursorPosition] == EMPTY;
-  @ public behaviour
+  @ public exceptional_behaviour
+  @   requires textBoxRenderer != null
   @   requires cursorPosition == 0;
   @   assignable textBoxRenderer.showError
-  @   ensures textBoxRenderer != null ==> textBoxRenderer.showError;
-  @   signals (RuntimeException e) true;
+  @   signals (RuntimeException e) textBoxRenderer.showError;
   */
   public void backspace()
   {
