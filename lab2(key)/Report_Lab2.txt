@@ -1,0 +1,45 @@
+Problem 1
+
+Files 
+ - Lab2Prob1.key
+ - Lab2Prob1.proof
+
+Simply proved in 52 steps. 
+
+
+_______________________________________________________________________
+
+Problem 2 
+
+File
+ - NumericTextBox.java
+
+The private variables are used by public methods and are therefore labeled with.
+	"/*@ spec_public @*/"
+
+The method getRenderer and isSingleDigit is labeled with
+	"/*@ pure @*/"
+since no states change using this method. 
+
+In setRenderer the parameter is labeled with 
+	"/*@ nullable @*/"
+
+The methods clear(), enterCharacter(int input) & backspace() were more tricky since they alter the values of content.
+Clear ensures that all values of content and cursorPosition is set to 0.
+enterCharacter
+	"ensures content[\old(cursorPosition)] == input;
+  	ensures \forAll int i; i < content.length && i >= 0; content[i] == \old(content[i]) || i == \old(cursorPosition);"
+and backspace is the same but with the new cursorPosition. 
+
+
+_______________________________________________________________________
+
+Problem 3
+
+3.1
+___________________________________
+
+3.2
+___________________________________
+
+3.3

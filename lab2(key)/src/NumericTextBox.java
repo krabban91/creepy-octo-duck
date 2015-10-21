@@ -48,7 +48,7 @@ public class NumericTextBox
   @ ensures result == textBoxRenderer;
   @ ensures \old(textBoxRenderer) == textBoxRenderer ;
    */
-  public  /*@ pure @*/TextBoxRenderer getRenderer()
+  public /*@ pure @*/ TextBoxRenderer getRenderer()
   {
     // ...
   }
@@ -76,13 +76,8 @@ public class NumericTextBox
    **/ 
   /*
    @ public normal_behaviour;
-   @   requires (input >= 0 && input <= 9);
-   @   ensures result;
-   @ also;
-   @ public normal_behaviour;
-   @   requires (input > 9 || input < 0);
-   @   ensures result == false;
-   */
+   @   ensures result == (input%10 == input);
+  */
   public /*@ pure @*/ boolean isSingleDigit(int input)
   {
     // ...
@@ -95,7 +90,7 @@ public class NumericTextBox
   /*
    @ public normal_behavior
    @   assignable textBoxRenderer.contentChanged;
-   @   assignable content;
+   @   assignable content[*];
    @   assignable cursorPosition;
    @   requires textBoxRenderer != null;
    @   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
@@ -123,7 +118,7 @@ public class NumericTextBox
   /* 
   @ public normal_behaviour
   @   assignable cursorPosition;
-  @   assignable content;
+  @   assignable content[cursorPosition];
   @   requires isSingleDigit(input);
   @   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
   @   ensures cursorPosition == \old(cursorPosition) + 1;
@@ -155,7 +150,7 @@ public class NumericTextBox
 
   /*
   @ public normal_behaviour
-  @   assignable content;
+  @   assignable content[cursorPosition-1];
   @   assignable cursorPosition;
   @   assignable textBoxRenderer.contentChanged;
   @   requires cursorPosition > 0;

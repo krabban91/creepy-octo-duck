@@ -2,7 +2,7 @@
 
 \settings {
 "#Proof-Settings-Config-File
-#Tue Oct 06 17:39:58 CEST 2015
+#Wed Oct 07 11:27:52 CEST 2015
 [StrategyProperty]VBT_PHASE=VBT_SYM_EX
 [SMTSettings]useUninterpretedMultiplication=true
 [SMTSettings]SelectedTaclets=
@@ -71,82 +71,58 @@
 (rule "andRight" (formula "3") (userinteraction))
 (branch "Case 1"
    (rule "notRight" (formula "3") (userinteraction))
-   (rule "exLeft" (formula "1") (inst "sk=x_1") (userinteraction))
-   (rule "exLeft" (formula "1") (inst "sk=y_1") (userinteraction))
+   (rule "exLeft" (formula "1") (inst "sk=x_0") (userinteraction))
+   (rule "exLeft" (formula "1") (inst "sk=y_0") (userinteraction))
    (rule "andLeft" (formula "1") (userinteraction))
    (rule "andLeft" (formula "1") (userinteraction))
-   (rule "instAll" (formula "2") (term "0") (ifseqformula "4") (userinteraction))
-   (rule "andLeft" (formula "2") (userinteraction))
-   (rule "replace_known_left" (formula "3") (term "0") (ifseqformula "4") (userinteraction))
-   (builtin "One Step Simplification" (formula "3"))
-   (rule "notLeft" (formula "3") (userinteraction))
-   (rule "replace_known_right" (formula "2") (term "0") (ifseqformula "7") (userinteraction))
-   (builtin "One Step Simplification" (formula "2") (ifInst ""  (formula "3")))
-   (rule "true_left" (formula "2") (userinteraction))
-   (rule "instAll" (formula "1") (term "0") (ifseqformula "5") (userinteraction))
-   (rule "instAll" (formula "2") (term "1") (ifseqformula "1") (userinteraction))
-   (rule "impLeft" (formula "2") (userinteraction))
+   (rule "instAll" (formula "2") (term "0") (ifseqformula "5") (userinteraction))
+   (rule "instAll" (formula "1") (term "1") (ifseqformula "2") (userinteraction))
+   (rule "replace_known_left" (formula "1") (term "0") (ifseqformula "2") (userinteraction))
+   (rule "impLeft" (formula "1") (userinteraction))
    (branch "Case 1"
-      (rule "close" (formula "7") (ifseqformula "2") (userinteraction))
+      (rule "closeTrue" (formula "7") (userinteraction))
    )
    (branch "Case 2"
-      (rule "orLeft" (formula "2") (userinteraction))
-      (branch "r(x_1)"
-         (rule "close" (formula "8") (ifseqformula "2") (userinteraction))
-      )
-      (branch "r(y_1)"
-         (rule "instAll" (formula "3") (term "0") (ifseqformula "6") (userinteraction))
-         (rule "andLeft" (formula "3") (userinteraction))
-         (rule "replace_known_right" (formula "3") (term "0") (ifseqformula "10") (userinteraction))
-         (builtin "One Step Simplification" (formula "3") (ifInst ""  (formula "6")))
-         (rule "true_left" (formula "3") (userinteraction))
-         (rule "replace_known_left" (formula "3") (term "0") (ifseqformula "5") (userinteraction))
-         (rule "impLeft" (formula "3") (userinteraction))
+      (rule "orLeft" (formula "1") (userinteraction))
+      (branch "r(x_0)"
+         (rule "instAll" (formula "1") (term "0") (ifseqformula "6") (userinteraction))
+         (rule "andLeft" (formula "1") (userinteraction))
+         (rule "replace_known_left" (formula "1") (term "0") (ifseqformula "3") (userinteraction))
+         (rule "impLeft" (formula "1") (userinteraction))
          (branch "Case 1"
-            (rule "closeTrue" (formula "8") (userinteraction))
+            (rule "closeTrue" (formula "9") (userinteraction))
          )
          (branch "Case 2"
-            (rule "notLeft" (formula "3") (userinteraction))
-            (rule "instAll" (formula "2") (term "0") (ifseqformula "1") (userinteraction))
-            (rule "replace_known_left" (formula "2") (term "0") (ifseqformula "4") (userinteraction))
+            (rule "replace_known_left" (formula "2") (term "0") (ifseqformula "6") (userinteraction))
             (rule "impLeft" (formula "2") (userinteraction))
             (branch "Case 1"
-               (rule "closeTrue" (formula "8") (userinteraction))
+               (rule "closeTrue" (formula "9") (userinteraction))
             )
             (branch "Case 2"
-               (rule "orLeft" (formula "2") (userinteraction))
-               (branch "r(x_1)"
-                  (rule "close" (formula "9") (ifseqformula "2") (userinteraction))
-               )
-               (branch "r(y_1)"
-                  (rule "instAll" (formula "2") (term "0") (ifseqformula "6") (userinteraction))
-                  (rule "andLeft" (formula "2") (userinteraction))
-                  (rule "replace_known_left" (formula "3") (term "0") (ifseqformula "7") (userinteraction))
-                  (rule "replace_known_left" (formula "2") (term "0") (ifseqformula "4") (userinteraction))
-                  (rule "impLeft" (formula "2") (userinteraction))
-                  (branch "Case 1"
-                     (rule "closeTrue" (formula "9") (userinteraction))
-                  )
-                  (branch "Case 2"
-                     (rule "impLeft" (formula "3") (userinteraction))
-                     (branch "Case 1"
-                        (rule "closeTrue" (formula "9") (userinteraction))
-                     )
-                     (branch "Case 2"
-                        (rule "notLeft" (formula "3") (userinteraction))
-                        (rule "close" (formula "9") (ifseqformula "3") (userinteraction))
-                     )
-                  )
-               )
+               (rule "notLeft" (formula "1") (userinteraction))
+               (rule "close" (formula "9") (ifseqformula "5") (userinteraction))
             )
+         )
+      )
+      (branch "r(y_0)"
+         (rule "instAll" (formula "1") (term "0") (ifseqformula "6") (userinteraction))
+         (rule "andLeft" (formula "1") (userinteraction))
+         (rule "replace_known_left" (formula "1") (term "0") (ifseqformula "3") (userinteraction))
+         (rule "impLeft" (formula "1") (userinteraction))
+         (branch "Case 1"
+            (rule "closeTrue" (formula "9") (userinteraction))
+         )
+         (branch "Case 2"
+            (rule "notLeft" (formula "1") (userinteraction))
+            (rule "close" (formula "9") (ifseqformula "6") (userinteraction))
          )
       )
    )
 )
 (branch "Case 2"
    (rule "impRight" (formula "3") (userinteraction))
-   (rule "exLeft" (formula "1") (inst "sk=x_2") (userinteraction))
-   (rule "exLeft" (formula "1") (inst "sk=y_2") (userinteraction))
+   (rule "exLeft" (formula "1") (inst "sk=x_1") (userinteraction))
+   (rule "exLeft" (formula "1") (inst "sk=y_1") (userinteraction))
    (rule "instAll" (formula "1") (term "0") (ifseqformula "3") (userinteraction))
    (rule "instAll" (formula "2") (term "1") (ifseqformula "1") (userinteraction))
    (rule "replace_known_left" (formula "2") (term "0") (ifseqformula "3") (userinteraction))
@@ -156,11 +132,11 @@
    )
    (branch "Case 2"
       (rule "orLeft" (formula "2") (userinteraction))
-      (branch "r(x_2)"
-         (rule "instEx" (formula "2") (term "0") (ifseqformula "6") (userinteraction))
+      (branch "r(x_1)"
+         (rule "instEx" (formula "3") (term "0") (ifseqformula "6") (userinteraction))
          (rule "close" (formula "6") (ifseqformula "2") (userinteraction))
       )
-      (branch "r(y_2)"
+      (branch "r(y_1)"
          (rule "instEx" (formula "2") (term "0") (ifseqformula "6") (userinteraction))
          (rule "close" (formula "6") (ifseqformula "2") (userinteraction))
       )
