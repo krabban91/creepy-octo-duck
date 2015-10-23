@@ -47,6 +47,13 @@ File
 
 Method Treatment.set(none).
 This was kind of straight forward. Use contract for the eliminateDuplicates method call and inline method for the report method.  
+IMPORTANT:
+	When loading the .proof file one needs to drag the \exists int n;(...) on the right side onto the \forall int i on the left side. Then auto-solve and the proof is complete. 
+	(We couldn't save a new proof when working in a .proof file.) 
+		Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
+			at de.uka.ilkd.key.gui.KeYFileChooser.showSaveDialog(KeYFileChooser.java:117)
+			at de.uka.ilkd.key.gui.WindowUserInterface.saveProof(WindowUserInterface.java:328)
+	
 ___________________________________
 
 3.2
