@@ -83,7 +83,7 @@ a)
 File
  - Lab2Prob33a.proof
 
-Simple use contract of drawVertical och drawHorizontal and let KeY do the rest.
+Simply use contract of drawVertical och drawHorizontal and let KeY do the rest.
 
 
 __________________
