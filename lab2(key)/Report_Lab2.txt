@@ -1,0 +1,91 @@
+Problem 1
+
+Files 
+ - Lab2Prob1.key
+ - Lab2Prob1.proof
+
+Simply proved in 52 steps. 
+
+
+_______________________________________________________________________
+
+Problem 2 
+
+File
+ - NumericTextBox.java
+
+The private variables are used by public methods and are therefore labeled with.
+	"/*@ spec_public @*/"
+
+The method getRenderer and isSingleDigit is labeled with
+	"/*@ pure @*/"
+since no states change using this method. 
+
+In setRenderer the parameter is labeled with 
+	"/*@ nullable @*/"
+
+The methods clear(), enterCharacter(int input) & backspace() were more tricky since they alter the values of content.
+Clear ensures that all values of content and cursorPosition is set to 0.
+enterCharacter
+	"ensures content[\old(cursorPosition)] == input;
+  	ensures \forAll int i; i < content.length && i >= 0; content[i] == \old(content[i]) || i == \old(cursorPosition);"
+and backspace is the same but with the new cursorPosition. 
+These longer formulas ensures that all values except one changes in content. 
+
+Apart from this the file is sort of straight forward.
+The exceptional case of backspace() was not fixed until we saw an example of the contract later in 3.3
+
+_______________________________________________________________________
+
+Problem 3
+
+3.1
+
+File
+ - BinarySearch.java
+ - Lab2Prob31.proof
+
+Method Treatment.set(none).
+This was kind of straight forward. Use contract for the eliminateDuplicates method call and inline method for the report method.  
+___________________________________
+
+3.2
+
+File
+ - BinarySearch.java
+ - Lab2Prob32.proof
+
+In this part we had bigger problems. At first our check was the following: 
+"if(size == -1){
+	throw RuntimeException("");
+}"
+But then the proof could not finish due to the cases of size != -1 and entering the while loop.
+
+After a while we realized that we were checking for the wrong thing and changed the check to the required predicates and made sure that size == -1 when throwing the exception. 
+
+___________________________________
+
+3.3
+
+File 
+ - Drawing.java
+
+a)
+
+File
+ - Lab2Prob33a.proof
+
+
+__________________
+
+b)
+
+File
+ - Lab2Prob33b.proof
+
+The method we used to check the invariant was to inspect the code first. Then we realized that the invariant didn't hold after the loop.
+There for we changed the
+	"0 <= i && i < canvas[depth].length"
+into
+	"0 <= i && i <= canvas[depth].length".
+

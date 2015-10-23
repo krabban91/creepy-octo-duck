@@ -59,34 +59,18 @@ public class BinarySearch {
  	  @ requires numbers.length == 0 && numbers != null;
       @ signals_only RuntimeException;
       @ signals (RuntimeException) size == -1;
-	  @ assignable size;
 	  @*/
 	private void eliminateDuplicates(int[] numbers) {
 		if(numbers.length == 0 && numbers != null){
-			if(size == -1){
-				throw new RuntimeException("You have to do better than that.");
-			}
+			size = -1;
+			throw new RuntimeException("You have to do better than that.");
 		}
 		int i = 0;
-		/*@
-		@ loop_invariant (i <= size && size <= \old(size) && numbers != null && (\forall int x; x >= 0 && x < i; numbers[x] != numbers[i]));	
-		@ 
-		@ assignable numbers[*], size;
-		@ decreasing (numbers.length - 1) - i;
-		@*/
 		while (i < numbers.length - 1) {
 			if (i >= size)
 				break;
 			if (numbers[i] == numbers[i + 1]) {
 				int j = i + 1;
-
-				/*@
-				@ loop_invariant (numbers[j-1] == numbers[j]);
-				@ 
-				@
-				@ assignable numbers[*];
-				@ decreasing (numbers.length - 1) - j;
-				@*/
 				while (j < numbers.length - 1) {
 					numbers[j] = numbers[j + 1];
 					j++;
