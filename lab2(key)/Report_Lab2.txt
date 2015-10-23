@@ -46,7 +46,8 @@ File
  - Lab2Prob31.proof
 
 Method Treatment.set(none).
-This was kind of straight forward. Use contract for the eliminateDuplicates method call and inline method for the report method.  
+This was kind of straight forward. Use contract for the eliminateDuplicates method call and inline method for the report method. 
+Make sure to use the post-condition of eliminateDupicates with an forAll substitution to fill the pre-condition for search. 
 IMPORTANT:
 	When loading the .proof file one needs to drag the \exists int n;(...) on the right side onto the \forall int i on the left side. Then auto-solve and the proof is complete. 
 	(We couldn't save a new proof when working in a .proof file.) 
@@ -81,6 +82,8 @@ a)
 
 File
  - Lab2Prob33a.proof
+
+Simple use contract of drawVertical och drawHorizontal and let KeY do the rest.
 
 
 __________________
