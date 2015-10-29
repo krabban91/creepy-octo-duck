@@ -16,6 +16,15 @@
  */
 public class NumericTextBox
 {
+  
+  /*@ public invariant
+	      cursorPosition >= 0 && 
+	      cursorPosition <= content.length && 
+	      isSingleDigit(content[cursorPosition-1]) && 
+	      content[cursorPosition] == EMPTY ;
+  */
+
+
   public final int EMPTY = -1;
   
   /**
@@ -93,7 +102,14 @@ public class NumericTextBox
    @   assignable content[*];
    @   assignable cursorPosition;
    @   requires textBoxRenderer != null;
-   @   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
+   @	 ensures textBoxRenderer.contentChanged;
+   @   ensures \forAll int i; i < content.length && i >= 0; content[i] == EMPTY;
+   @   ensures cursorPosition == 0;
+   @ also
+   @ public normal_behavior
+   @   assignable content[*];
+   @   assignable cursorPosition;
+   @   requires textBoxRenderer == null;
    @   ensures \forAll int i; i < content.length && i >= 0; content[i] == EMPTY;
    @   ensures cursorPosition == 0;
    */
@@ -119,21 +135,45 @@ public class NumericTextBox
   @ public normal_behaviour
   @   assignable cursorPosition;
   @   assignable content[cursorPosition];
+  @   assignable textBoxRenderer.contentChanged;
   @   requires isSingleDigit(input);
-  @   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
+  @   requires textBoxRenderer != null;
+  @   ensures textBoxRenderer.contentChanged;
   @   ensures cursorPosition == \old(cursorPosition) + 1;
   @   ensures content[\old(cursorPosition)] == input;
-  @   ensures \forAll int i; i < content.length && i >= 0; content[i] == \old(content[i]) || i == \old(cursorPosition);
   @ also
-  @   public exceptional_behaviour
-  @      requires !isSingleDigit(input);
-  @      signals (IllegalArgumentException) true;
+  @ public normal_behaviour
+  @   assignable cursorPosition;
+  @   assignable content[cursorPosition];
+  @   requires isSingleDigit(input);
+  @   requires textBoxRenderer == null;
+  @   ensures cursorPosition == \old(cursorPosition) + 1;
+  @   ensures content[\old(cursorPosition)] == input;
   @ also
-  @   public exceptional_behaviour
-  @      requires isSingleDigit(input);
-  @      requires cursorPosition == content.length;
-  @      signals (RuntimeException) true;
-  */
+  @ public exceptional_behaviour
+  @	  assignalble textBoxRenderer.showError;
+  @   requires !isSingleDigit(input);
+  @ 	requires textBoxRenderer != null;
+  @   signals (IllegalArgumentException) textBoxRenderer.showError;
+  @ also
+  @ public exceptional_behaviour
+  @	  requires !isSingleDigit(input);
+  @ 	requires textBoxRenderer == null;
+  @   signals (IllegalArgumentException) true;
+  @ also
+  @ public exceptional_behaviour
+  @	  assignalble textBoxRenderer.showError;
+  @   requires isSingleDigit(input);
+  @ 	requires textBoxRenderer != null;
+  @   requires cursorPosition == content.length;
+  @   signals (RuntimeException) textBoxRenderer.showError;
+  @ also
+  @ public exceptional_behaviour
+  @   requires isSingleDigit(input);
+  @ 	requires textBoxRenderer == null;
+  @   requires cursorPosition == content.length;
+  @   signals (RuntimeException) true;
+  @ */
   public void enterCharacter(int input)
   {
     // ...
@@ -154,15 +194,29 @@ public class NumericTextBox
   @   assignable cursorPosition;
   @   assignable textBoxRenderer.contentChanged;
   @   requires cursorPosition > 0;
-  @   ensures textBoxRenderer != null ==> textBoxRenderer.contentChanged;
+  @   requires textBoxRenderer != null;
+  @	 	ensures textBoxRenderer.contentChanged;
   @   ensures cursorPosition == \old(cursorPosition) - 1;
-  @   ensures \forAll int i; i < content.length && i >= 0; content[i] == \old(content[i]) || i == cursorPosition;
   @   ensures content[cursorPosition] == EMPTY;
+  @ also
+  @ public normal_behaviour
+  @   assignable content[cursorPosition-1];
+  @   assignable cursorPosition;
+  @   requires cursorPosition > 0;
+  @   requires textBoxRenderer == null;
+  @   ensures cursorPosition == \old(cursorPosition) - 1;
+  @   ensures content[cursorPosition] == EMPTY;
+  @ also
   @ public exceptional_behaviour
-  @   requires textBoxRenderer != null
+  @   assignable textBoxRenderer.showError;
+  @   requires textBoxRenderer != null;
   @   requires cursorPosition == 0;
-  @   assignable textBoxRenderer.showError
   @   signals (RuntimeException e) textBoxRenderer.showError;
+  @ also
+  @ public exceptional_behaviour
+  @   requires textBoxRenderer == null;
+  @   requires cursorPosition == 0;
+  @   signals (RuntimeException e) true;
   */
   public void backspace()
   {
