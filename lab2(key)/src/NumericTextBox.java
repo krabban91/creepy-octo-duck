@@ -20,8 +20,8 @@ public class NumericTextBox
   /*@ public invariant
 	      cursorPosition >= 0 && 
 	      cursorPosition <= content.length && 
-	      isSingleDigit(content[cursorPosition-1]) && 
-	      content[cursorPosition] == EMPTY ;
+        (\forAll int i; i < cursorPosition && i >= 0; isSingleDigit(content[i])) &&
+	      content[cursorPosition] == EMPTY;
   */
 
 
@@ -46,7 +46,7 @@ public class NumericTextBox
    * Holds the current TextBoxRenderer. This can be null, which means that there
    * is no renderer assigned.
    */
-  private /*@ spec_public @*/ TextBoxRenderer textBoxRenderer;
+  private /*@ spec_public nullable @*/ TextBoxRenderer textBoxRenderer;
   
 
   /**
